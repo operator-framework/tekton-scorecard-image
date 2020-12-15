@@ -36,6 +36,7 @@ import (
 // test image.
 
 const PodBundleRoot = "/bundle"
+
 func main() {
 	entrypoint := os.Args[1:]
 	if len(entrypoint) == 0 {
@@ -56,6 +57,8 @@ func main() {
 		result = tests.CustomTest1(cfg)
 	case tests.CustomTest2Name:
 		result = tests.CustomTest2(cfg)
+	case tests.OperatorRunningTestName:
+		result = tests.OperatorRunningTest(cfg)
 	default:
 		result = printValidTests()
 	}

@@ -2,11 +2,10 @@ module github.com/operator-framework/tekton-scorecard-image
 
 go 1.13
 
-replace k8s.io/client-go => k8s.io/client-go v0.18.2
-
 require (
-	github.com/operator-framework/api v0.4.0
-	github.com/operator-framework/operator-registry v1.12.6-0.20200611222234-275301b779f8
-	github.com/operator-framework/operator-sdk v0.19.0
-	github.com/sirupsen/logrus v1.6.0
+	github.com/operator-framework/api v0.5.0
+	k8s.io/api v0.20.0
+	k8s.io/apimachinery v0.20.0
+	k8s.io/client-go v0.20.0
+	sigs.k8s.io/controller-runtime v0.7.0
 )

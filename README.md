@@ -11,6 +11,12 @@ tekton pipeline operator.
 make image-build
 ```
 
+## Setup the Required RBAC for the Tests
+
+```
+make installrbac
+```
+
 ## Run the Scorecard Tests
 
 ```
