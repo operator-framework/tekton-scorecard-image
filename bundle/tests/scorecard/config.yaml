@@ -4,17 +4,17 @@ metadata:
   name: config
 stages:
 - tests:
-  - image: quay.io/username/custom-scorecard-tests:dev
+  - image: quay.io/operator-framework/tekton-scorecard-image:dev
     entrypoint:
-    - custom-scorecard-tests
+    - tekton-scorecard-tests
     - customtest1
     labels:
-      suite: custom
+      suite: tekton
       test: customtest1
-  - image: quay.io/username/custom-scorecard-tests:dev
+  - image: quay.io/operator-framework/tekton-scorecard-image:dev
     entrypoint:
-    - custom-scorecard-tests
+    - tekton-scorecard-tests
     - customtest2
     labels:
-      suite: custom
+      suite: tekton
       test: customtest2
