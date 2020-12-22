@@ -18,3 +18,13 @@ rules:
   - get
   - list
   - watch
+- apiGroups:
+  - "tekton.dev"
+  resources:
+  - taskruns
+  - tasks
+  verbs:
+  - get
+  - create
+  - list
+  - delete

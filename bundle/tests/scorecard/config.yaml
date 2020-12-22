@@ -25,3 +25,10 @@ stages:
     labels:
       suite: tekton
       test: operatorrunning
+  - image: quay.io/operator-framework/tekton-scorecard-image:dev
+    entrypoint:
+    - tekton-scorecard-tests
+    - tasksuccess
+    labels:
+      suite: tekton
+      test: tasksuccess

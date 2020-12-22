@@ -59,6 +59,8 @@ func main() {
 		result = tests.CustomTest2(cfg)
 	case tests.OperatorRunningTestName:
 		result = tests.OperatorRunningTest(cfg)
+	case tests.TaskTestName:
+		result = tests.TaskRunTest(cfg)
 	default:
 		result = printValidTests()
 	}
@@ -81,7 +83,9 @@ func printValidTests() scapiv1alpha3.TestStatus {
 
 	str := fmt.Sprintf("Valid tests for this image include: %s %s",
 		tests.CustomTest1Name,
-		tests.CustomTest2Name)
+		tests.CustomTest2Name,
+		tests.OperatorRunningTestName,
+		tests.TaskTestName)
 	result.Errors = append(result.Errors, str)
 	return scapiv1alpha3.TestStatus{
 		Results: []scapiv1alpha3.TestResult{result},
