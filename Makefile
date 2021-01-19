@@ -1,5 +1,7 @@
 IMAGE = quay.io/operator-framework/tekton-scorecard-image
 SHELL = /bin/bash
+# set Go builds flags for cross-compilation in case build system is non-Linux
+GO_BUILD_FLAGS = GOOS=linux GOARCH=amd64
 
 all: build
 
@@ -9,7 +11,7 @@ clean: ## Clean up the build artifacts
 	rm -f images/tekton-scorecard-tests/tekton-scorecard-tests
 
 build:
-	go build internal/tests/tests.go
+	$(GO_BUILD_FLAGS) go build internal/tests/tests.go
 image-build: ## Running `make image-build` from the project root of this example test function will build docker test image.
 	go build -o images/tekton-scorecard-tests/tekton-scorecard-tests images/tekton-scorecard-tests/cmd/test/main.go
 	cd images/tekton-scorecard-tests && docker build -t $(IMAGE):dev .
