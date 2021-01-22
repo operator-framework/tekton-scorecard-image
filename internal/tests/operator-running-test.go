@@ -18,6 +18,8 @@ import (
 	"context"
 	"fmt"
 
+	//	"time"
+
 	scapiv1alpha3 "github.com/operator-framework/api/pkg/apis/scorecard/v1alpha3"
 	apimanifests "github.com/operator-framework/api/pkg/manifests"
 	"github.com/operator-framework/tekton-scorecard-image/internal/util"
@@ -37,6 +39,8 @@ func OperatorRunningTest(bundle *apimanifests.Bundle) scapiv1alpha3.TestStatus {
 	r.Errors = make([]string, 0)
 	r.Suggestions = make([]string, 0)
 
+	//	time.Sleep(20 * time.Second)
+
 	//clientset, config, err := util.GetKubeClient()
 	clientset, _, err := util.GetKubeClient()
 	if err != nil {
@@ -46,6 +50,25 @@ func OperatorRunningTest(bundle *apimanifests.Bundle) scapiv1alpha3.TestStatus {
 	}
 
 	ns := "tekton-pipelines"
+
+	namespaces, err := clientset.CoreV1().Namespaces().List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		r.State = scapiv1alpha3.FailState
+		r.Errors = append(r.Errors, fmt.Sprintf("error getting namespaces %s", err.Error()))
+		return wrapResult(r)
+	}
+
+	for i := 0; i < len(namespaces.Items); i++ {
+		n := namespaces.Items[i]
+		if n.Name == "openshift-pipelines" {
+			ns = "openshift-pipelines"
+			break
+		}
+		if n.Name == "tekton-pipelines" {
+			ns = "tekton-pipelines"
+			break
+		}
+	}
 
 	var pods *corev1.PodList
 	var p corev1.Pod
