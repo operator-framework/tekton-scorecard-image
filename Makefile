@@ -17,4 +17,4 @@ image-build: ## Running `make image-build` from the project root of this example
 	cd images/tekton-scorecard-tests && docker build -t $(IMAGE):dev .
 runtests: ## run the scorecard tests
 	#operator-sdk scorecard ./bundle --selector=suite=tekton --service-account=tekton-operator-tests --namespace=default
-	operator-sdk scorecard ./bundle --selector=suite=tekton --service-account=tekton-operator-tests --namespace=default --skip-cleanup
+	operator-sdk scorecard ./bundle --selector='suite=tekton,test=pipelinerunsuccess' --service-account=tekton-operator-tests --namespace=default --skip-cleanup

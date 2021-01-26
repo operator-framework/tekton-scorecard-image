@@ -21,6 +21,8 @@ rules:
 - apiGroups:
   - "tekton.dev"
   resources:
+  - pipelineruns
+  - pipelines
   - taskruns
   - tasks
   verbs:

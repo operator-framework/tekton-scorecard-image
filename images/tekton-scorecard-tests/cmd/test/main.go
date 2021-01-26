@@ -61,6 +61,8 @@ func main() {
 		result = tests.OperatorRunningTest(cfg)
 	case tests.TaskTestName:
 		result = tests.TaskRunTest(cfg)
+	case tests.PipelineRunTestName:
+		result = tests.PipelineRunTest(cfg)
 	default:
 		result = printValidTests()
 	}
@@ -85,7 +87,8 @@ func printValidTests() scapiv1alpha3.TestStatus {
 		tests.CustomTest1Name,
 		tests.CustomTest2Name,
 		tests.OperatorRunningTestName,
-		tests.TaskTestName)
+		tests.TaskTestName,
+		tests.PipelineRunTestName)
 	result.Errors = append(result.Errors, str)
 	return scapiv1alpha3.TestStatus{
 		Results: []scapiv1alpha3.TestResult{result},

@@ -20,6 +20,10 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 	scheme.AddKnownTypes(SchemeGroupVersion,
 		&v1beta1.Task{},
 		&v1beta1.TaskList{},
+		&v1beta1.Pipeline{},
+		&v1beta1.PipelineList{},
+		&v1beta1.PipelineRun{},
+		&v1beta1.PipelineRunList{},
 		&v1beta1.TaskRun{},
 		&v1beta1.TaskRunList{},
 	)
