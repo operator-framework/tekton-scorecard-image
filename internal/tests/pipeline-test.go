@@ -36,6 +36,7 @@ const (
 	PipelineRunTestName = "pipelinerunsuccess"
 	pipelineName        = "hello-world-pipeline"
 	pipelineRunName     = "hello-world-pipelinerun"
+	pipelineTaskName    = "pipeline-echo-hello-world"
 )
 
 // Test to see if the PipelineRun was successful
@@ -63,7 +64,7 @@ func PipelineRunTest(bundle *apimanifests.Bundle) scapiv1alpha3.TestStatus {
 	ns := os.Getenv("SCORECARD_NAMESPACE")
 
 	// make sure test resources are cleaned up first
-	cleanupPipeline(config, ns)
+	//cleanupPipeline(config, ns)
 
 	// setup the cleanup of resources when this test completes
 	defer cleanupPipeline(config, ns)
@@ -89,15 +90,15 @@ func PipelineRunTest(bundle *apimanifests.Bundle) scapiv1alpha3.TestStatus {
 		return wrapResult(r)
 	}
 
-	// ensure we have a task created name echo-hello-world
+	// ensure we have a task created name pipeline-echo-hello-world
 	// we'll use it later for our pipeline
 
-	_, err = taskClient.Get("echo-hello-world")
+	_, err = taskClient.Get(pipelineTaskName)
 	if err != nil {
 		if kerrors.IsNotFound(err) {
 			//fmt.Printf("%s is not found\n", tname)
 			t := v1beta1.Task{}
-			t.ObjectMeta.Name = "echo-hello-world"
+			t.ObjectMeta.Name = pipelineTaskName
 			t.Spec.Steps = make([]v1beta1.Step, 1)
 			t.Spec.Steps[0].Container.Name = "echo"
 			t.Spec.Steps[0].Container.Image = "ubuntu"
@@ -126,7 +127,8 @@ func PipelineRunTest(bundle *apimanifests.Bundle) scapiv1alpha3.TestStatus {
 			p.ObjectMeta.Name = pipelineName
 			p.Spec.Tasks = make([]v1beta1.PipelineTask, 1)
 			p.Spec.Tasks[0].Name = "run-hello-world-task"
-			p.Spec.Tasks[0].TaskRef.Name = "echo-hello-world"
+			p.Spec.Tasks[0].TaskRef = &v1beta1.TaskRef{}
+			p.Spec.Tasks[0].TaskRef.Name = pipelineTaskName
 			_, err := pipelineClient.Create(&p)
 			if err != nil {
 				r.State = scapiv1alpha3.FailState
@@ -187,7 +189,7 @@ func cleanupPipeline(config *rest.Config, ns string) {
 	}
 
 	// delete the Pipeline
-	pipelineClient.Delete(tname, &metav1.DeleteOptions{})
+	pipelineClient.Delete(pipelineName, &metav1.DeleteOptions{})
 	if err != nil {
 		fmt.Printf("error deleting Pipeline %s %s\n", pipelineName, err.Error())
 		return
