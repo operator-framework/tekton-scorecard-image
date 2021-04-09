@@ -4,6 +4,7 @@ import io.quarkus.runtime.annotations.QuarkusMain;
 import javautil.manifests.Bundle;
 import javautil.manifests.Manifests;
 import tests.OperatorRunningTest;
+import tests.TaskRunTest;
 import tests.Tests;
 
 @QuarkusMain
@@ -28,9 +29,11 @@ public class Main implements QuarkusApplication {
             case Tests.CustomTest2Name:
                 System.out.println(Tests.customTest2(bundle));
                 break;
-            case OperatorRunningTest
-                    .OperatorRunningTestName:
+            case OperatorRunningTest.OperatorRunningTestName:
                 System.out.println(OperatorRunningTest.operatorRunningTest(bundle));
+                break;
+            case TaskRunTest.TaskRunTestName:
+                System.out.println(TaskRunTest.taskRunTest(bundle));
                 break;
             default:
                 System.out.printf("test %s did not match any known tests", entrypoint);
