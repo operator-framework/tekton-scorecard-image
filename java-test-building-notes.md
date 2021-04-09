@@ -11,11 +11,12 @@ mvn package -Pnative -Dquarkus.native.container-build=true
 ```
 tekton-scorecard-image-1.0-SNAPSHOT-runner
 ```
-# TODO
-- more notes on building Java tests, possibly add to README.md
-- note that https://quarkus.io/guides/command-mode-reference is a good reference for this type of Quarkus Java app.
 
-Java dev notes:
+Define a JAVA_IMAGE to override the default, for example:
+```bash
+export JAVA_IMAGE=quay.io/operator-framework/tekton-scorecard-java-image
+```
+##Java test usage notes:
 
 `make image-build-java`
 
@@ -38,14 +39,16 @@ or to just try java locally run jar directly with:
 
 or just
 
-`make tag-update && make image-build-java && make docker-push`
+`make tag-update && make image-build-java && make docker-push-java`
 
-(the last,  the local run jar option, assumes you've tweaked the bundle dir from `/bundle` to `./bundle`)
+(the local run jar option assumes you've tweaked the bundle dir from `/bundle` to `./bundle`)
 
-## run notes:
+## Java dev notes:
 - with fabric8 CSV class and local generated CSV both used we can only deserialize:
 ```  
   ./bundle/manifests/memcached-operator.clusterserviceversion.yaml
   Failed to deserialize with any CSV family class: cache.example.com_memcacheds_crd.yaml
   ./bundle/metadata/annotations.yaml
 ```  
+-  https://quarkus.io/guides/command-mode-reference is a good reference for this type of Quarkus Java app.
+
