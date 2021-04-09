@@ -61,3 +61,10 @@ stages:
     labels:
       suite: tekton
       test: operatorrunning
+  - image: quay.io/operator-framework/tekton-scorecard-java-image:latest03
+    entrypoint:
+      - tekton-scorecard-tests
+      - taskrun
+    labels:
+      suite: tekton
+      test: taskrun

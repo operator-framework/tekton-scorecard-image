@@ -16,16 +16,17 @@ import java.util.function.Predicate;
 
 import static com.google.common.collect.MoreCollectors.onlyElement;
 
-public class OperatorRunningTest {
-    public static final String OperatorRunningTestName = "operatorrunning";
+public class TaskRunTest {
+    public static final String TaskRunTestName = "taskrun";
 
-    public static String operatorRunningTest(Bundle bundle) {
+    public static String taskRunTest(Bundle bundle) {
         TestResult result = new TestResult();
-        result.setName(OperatorRunningTestName);
+        result.setName(TaskRunTestName);
         result.setState(State.PassState);
         ArrayList<String> errors = new ArrayList<String>();
         ArrayList<String> log = new ArrayList<String>();
 
+        Context context = new Context();
         OpenShiftClient osClient;
 
         try {
@@ -34,41 +35,41 @@ public class OperatorRunningTest {
             return makeInstantReturnError(result, log, errors, e, "Error getting OpenShift client");
         }
 
-        String nameSpace = "";
-        try {
-            Predicate<Namespace> isOSPipeline = n -> n.getMetadata().getName().equals("openshift-pipelines");
-            Predicate<Namespace> isTektonPipeline = n -> n.getMetadata().getName().equals("tekton-pipelines");
-            Predicate<Namespace> isValidPipeline = isOSPipeline.or(isTektonPipeline);
-
-            nameSpace = osClient.namespaces()
-                    .list(new ListOptions())
-                    .getItems().stream()
-                    .filter(isValidPipeline)
-                    .map(n -> n.getMetadata().getName())
-                    .collect(onlyElement());
-        } catch (Exception e) {
-            return makeInstantReturnError(result, log, errors, e, "Trouble finding the pipeline namespace");
-        }
-
-        log.add(nameSpace + " is the found namespace");
-        // look for a pod with this label: "app=tekton-pipelines-controller"
-        ListOptions listOptions = new ListOptions();
-        listOptions.setLabelSelector("app=tekton-pipelines-controller");
-
-        Pod pod = osClient.pods().inNamespace(nameSpace)
-                    .list(listOptions)
-                    .getItems().stream()
-                    .collect(onlyElement());
-
-        log.add(pod.getMetadata().getName() + " is the found pod");
-
-        if (pod.getStatus().getPhase().equals("Running")) {
-            result.setState(State.PassState);
-        } else {
-            log.add("Pipeline pod found but not running");
-            result.setState(State.FailState);
-        }
-
+        String nameSpace = System.getenv("SCORECARD_NAMESPACE");
+//        try {
+//            Predicate<Namespace> isOSPipeline = n -> n.getMetadata().getName().equals("openshift-pipelines");
+//            Predicate<Namespace> isTektonPipeline = n -> n.getMetadata().getName().equals("tekton-pipelines");
+//            Predicate<Namespace> isValidPipeline = isOSPipeline.or(isTektonPipeline);
+//
+//            nameSpace = osClient.namespaces()
+//                    .list(new ListOptions())
+//                    .getItems().stream()
+//                    .filter(isValidPipeline)
+//                    .map(n -> n.getMetadata().getName())
+//                    .collect(onlyElement());
+//        } catch (Exception e) {
+//            return makeInstantReturnError(result, log, errors, e, "Trouble finding the pipeline namespace");
+//        }
+//
+//        log.add(nameSpace + " is the found namespace");
+//        // look for a pod with this label: "app=tekton-pipelines-controller"
+//        ListOptions listOptions = new ListOptions();
+//        listOptions.setLabelSelector("app=tekton-pipelines-controller");
+//
+//        Pod pod = osClient.pods().inNamespace(nameSpace)
+//                    .list(listOptions)
+//                    .getItems().stream()
+//                    .collect(onlyElement());
+//
+//        log.add(pod.getMetadata().getName() + " is the found pod");
+//
+//        if (pod.getStatus().getPhase().equals("Running")) {
+//            result.setState(State.PassState);
+//        } else {
+//            log.add("Pipeline pod found but not running");
+//            result.setState(State.FailState);
+//        }
+        log.add("namespace passed as: " + nameSpace);
         result.setLog(log.toString());
         TestStatus testStatus = new TestStatus(java.util.Collections.singletonList(result));
         return wrapAsJSON(testStatus);
