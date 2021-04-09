@@ -11,7 +11,7 @@ tag-update:
 	./tag-update.pl
 
 docker-push-java:
-	docker push $(JAVA_IMAGE):latest04
+	docker push $(JAVA_IMAGE):dev
 
 installrbac: ## run only one time to configure rbac for tests
 	kubectl apply -f rbac/
@@ -42,7 +42,7 @@ image-build: ## Running `make image-build` from the project root of this example
 	cd images/tekton-scorecard-tests && docker build -t $(IMAGE):dev .
 
 image-build-java: build-java-native ## Running `make image-build-java` from the project root of this example test function will build docker test image with Java native image.
-	cd images/tekton-scorecard-tests && docker build -t $(JAVA_IMAGE):latest04 .
+	cd images/tekton-scorecard-tests && docker build -t $(JAVA_IMAGE):dev .
 
 runtests: ## run the scorecard tests
 	#operator-sdk scorecard ./bundle --selector=suite=tekton --service-account=tekton-operator-tests --namespace=default

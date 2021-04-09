@@ -40,28 +40,28 @@ stages:
       suite: tekton
       test: pipelinerunsuccess
 #      Java tests
-  - image: image-registry.openshift-image-registry.svc:5000/default/tekton-scorecard-java-image:latest04
+  - image: quay.io/operator-framework/tekton-scorecard-java-image:dev
     entrypoint:
       - tekton-scorecard-tests
       - customtest1
     labels:
       suite: tekton
       test: customtest1
-  - image: image-registry.openshift-image-registry.svc:5000/default/tekton-scorecard-java-image:latest04
+  - image: quay.io/operator-framework/tekton-scorecard-java-image:dev
     entrypoint:
       - tekton-scorecard-tests
       - customtest2
     labels:
       suite: tekton
       test: customtest2
-  - image: image-registry.openshift-image-registry.svc:5000/default/tekton-scorecard-java-image:latest04
+  - image: quay.io/operator-framework/tekton-scorecard-java-image:dev
     entrypoint:
       - tekton-scorecard-tests
       - operatorrunning
     labels:
       suite: tekton
       test: operatorrunning
-  - image: image-registry.openshift-image-registry.svc:5000/default/tekton-scorecard-java-image:latest04
+  - image: quay.io/operator-framework/tekton-scorecard-java-image:dev
     entrypoint:
       - tekton-scorecard-tests
       - taskrun
